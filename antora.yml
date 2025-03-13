@@ -1,0 +1,15 @@
+name: s3-connector
+version: 'dev'
+prerelease: true
+title: Внешнее файловое хранилище S3
+asciidoc:
+  attributes:
+    pl-req: '6.1'
+    s3: 'Файловое хранилище S3'
+    of-s3: 'Файлового хранилища S3'
+
+nav:
+- modules/ROOT/nav.adoc
+- modules/common/common.adoc
+- modules/admin/admin.adoc
+#- modules/.user/user.adoc

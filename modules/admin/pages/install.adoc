@@ -1,0 +1,130 @@
+= Установка комплекта инструментов
+
+Пользователь, выполняющий установку, должен обладать правами локального администратора.
+
+[#linux]
+== Установка пакетов в ОС Linux
+
+. Ознакомьтесь с xref:ROOT:requirements.adoc[требованиями] для работы с хранилищем.
+. Обновите список пакетов и необходимых зависимостей:
++
+ $ sudo apt-get update
+ $ sudo apt-get install -y ca-certificates curl gnupg lsb-release
++
+. Выполните установку MinIo:
++
+[source,bash]
+====
+mkdir -p ~/minio/data
+docker run \
+-p 9000:9000 \
+-p 9001:9001 \
+--name minio \
+-v ~/minio/data:/data \
+-e "MINIO_ROOT_USER=user" \
+-e "MINIO_ROOT_PASSWORD=password" \
+quay.io/minio/minio server /data --console-address ":9001"
+====
++
+. В случае возникновения ожидания ответа от пользователя нажмите kbd:[Ctrl+C].
+. Убедитесь, что контейнер успешно создан и запустите его следующими командами:
++
+[source,bash]
+----
+docker ps -a
+docker start minio
+----
++
+. Убедитесь, что `STATUS` запущенного контейнера в состоянии `UP` и записывается время его работы командой:
++
+ $ docker ps
++
+. В строке браузера откройте `http://IP-адрес-сервера:9001`.
++
+Должна будет открыться страница входа в MinIo.
++
+. В случае если страница не открылась, убедителсь, что необходимые порты (`9000` и `9001`) доступны.
+. Настройте безопасное соединение при помощи самоподписанного сертификата SSL.
+.. Создайте папку для сертификатов
++
+ $ mkdir -p ~/minio/certs
++
+. Перейдите в созданную папку и создайте приватный ключ:
++
+ $ openssl genpkey -algorithm RSA -out private.key -pkeyopt rsa_keygen_bits:2048
++
+. Создайте запрос на сертификат:
++
+ $ openssl req -new -key private.key -out certificate.csr
++
+. Во время выполнения этой команды укажите необходимые параметры для создания запроса, включая доменное имя или IP-адрес.
+. Создайте самоподписанный сертификат:
++
+ $ openssl x509 -req -days 365 -in certificate.csr -signkey private.key -out public.crt
++
+. Переместите сертификаты в папку `minio/certs`:
++
+ $ mv private.key public.crt ~/minio/certs/
++
+. При необходимости создайте папку `CAs` для корневых сертификатов:
++
+ $ mkdir -p ~/minio/certs/CAs
++
+. Скопируйте сертификаты в контейнер MinIO:
++
+ $ docker cp ~/minio/certs/private.key minio:/root/.minio/certs/private.key
+ $ docker cp ~/minio/certs/public.crt minio:/root/.minio/certs/public.crt
++
+. При наличии дополнительных сертификатов (например, CA сертификаты), скопируйте их:
++
+ $ docker cp ~/minio/certs/CAs/ca.crt minio:/root/.minio/certs/CAs/ca.crt
++
+. Перезапустите контейнер MinIO командой:
++
+ $ docker restart minio
++
+. Проверьте журналы контейнера, чтобы убедиться в успешном запуске с SSL:
++
+ $ docker logs minio
+
+[#mounting]
+=== Запуск с использованием монтирования
+
+. Остановливаем контейнер MinIO:
++
+ $ docker stop minio
++
+. Перезапустите контейнер с монтированием сертификатов:
++
+[source]
+----
+docker run \
+-p 9000:9000 \
+-p 9001:9001 \
+--name minio \
+-v ~/minio/data:/data \
+-v ~/minio/certs:/root/.minio/certs \
+-e "MINIO_ROOT_USER=ROOTNAME" \
+-e "MINIO_ROOT_PASSWORD=PASSWORD" \
+quay.io/minio/minio server /data --console-address ":9001"
+----
+
+[#windows]
+== Установка компонентов в ОС Windows
+
+. Запустите пакет установки `Docsvision External file storage S3.msi`.
++
+.Мастер установки {of-s3}
+image::install-hello.png[Мастер установки {of-s3}]
++
+. Примите условия лицензионного соглашения для продолжения установки.
++
+.Условия лицензионного соглашения
+image::install-license.png[Условия лицензионного соглашения]
++
+. Нажмите на кнопку *Установить* и дождитесь завершения установки Модуля.
++
+.Пожтвердите установку
+image::install-confirm.png[Пожтвердите установку]
++
+. Нажмите на кнопку *Готово*, чтобы закрыть мастер установки.
