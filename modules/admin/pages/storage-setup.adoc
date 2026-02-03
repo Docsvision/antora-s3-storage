@@ -2,7 +2,7 @@
 
 . Установите хранилище S3 на выделенном сервере согласно xref:install.adoc[инструкции].
 . Зайдите в web-интерфейс S3 по адресу `\http://server-name:9001` под учётной записью администратора и создайте бакеты с названиями `archive` и `primary`.
-. Скопируйте следующие файлы в каталог `/usr/lib/docsvision/common/` на сервере {dv}:
+. Скопируйте следующие файлы в каталог `/usr/lib/docsvision/common` в Linux и `C:\Program Files\Docsvision\Common` в Windows на сервере {dv}:
 +
 * `AWSSDK.Core.dll`
 * `AWSSDK.S3.dll`
@@ -12,7 +12,7 @@
 * `credintails.txt`
 +
 . В файле `credintails.txt` укажите действующий адрес сервера S3.
-. Скопируйте библиотеку `S3StorageProvider.dll` на сервер приложений на сервер с модулем {mc} в каталог `/usr/lib/docsvision/common/S3/`.
+. Скопируйте библиотеку `S3StorageProvider.dll` на сервер приложений на сервер с модулем {mc} в каталог `/usr/lib/docsvision/common/S3/` в Linux и `C:\Program Files\Docsvision\Common\S3` в Windows.
 include::dev@mgmtconsole:servers:partial$excerpts.adoc[tags=openStorages]
 . В качестве типа выберите *_Собственное хранилище_* и укажите `S3StorageProvider` в поле _Провайдер_. После добавления внешнего хранилища должен появиться тип `S3 storage`.
 include::dev@mgmtconsole:servers:partial$excerpts.adoc[tags=apply]
