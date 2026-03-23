@@ -13,9 +13,9 @@
 +
 . В файле `credintails.txt` укажите действующий адрес сервера S3.
 . Скопируйте библиотеку `S3StorageProvider.dll` на сервер приложений на сервер с модулем {mc} в каталог `/usr/lib/docsvision/common/S3/` в Linux и `C:\Program Files\Docsvision\Common\S3` в Windows.
-include::dev@mgmtconsole:servers:partial$excerpts.adoc[tags=openStorages]
+include::6.2@mgmtconsole:servers:partial$excerpts.adoc[tags=openStorages]
 . В качестве типа выберите *_Собственное хранилище_* и укажите `S3StorageProvider` в поле _Провайдер_. После добавления внешнего хранилища должен появиться тип `S3 storage`.
-include::dev@mgmtconsole:servers:partial$excerpts.adoc[tags=apply]
+include::6.2@mgmtconsole:servers:partial$excerpts.adoc[tags=apply]
 . Настройте использование внешнего хранилища S3 по инструкции, приведённой в разделе "xref:platform:console:storage-setup.adoc[]".
 +
 .Настройка использования внешнего хранилища S3
