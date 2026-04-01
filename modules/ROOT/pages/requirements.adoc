@@ -8,6 +8,7 @@
 [#software]
 == Необходимое программное обеспечение
 
+.В кросс-платформенной версии {dv} сервер может работать под управлением следующих ОС:
 include::dv6@install-linux:ROOT:requirements-software.adoc[tags=oslist]
 
 . Для установки внешнего хранилища S3 требуется https://www.docker.com/[Docker] актуальной версии.
